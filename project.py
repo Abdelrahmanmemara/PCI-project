@@ -53,6 +53,7 @@ class Rabbit(Agent):
     def asexual_reproduction(self):
         # The rabbit can give birth up to 12 per litters.
         for i in range(12):
+            # There is a probability of 0.6 of every rabbit in the litter to make it.
             if np.random.rand() < self.config.average_life:
                 self.reproduce()
 
