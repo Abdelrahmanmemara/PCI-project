@@ -50,7 +50,7 @@ class Fox(Agent):
 
 class Rabbit(Agent):
     config: LotkaVolterraConfig
-    D:int = 0 # We will make an assumption that every 1000 D is a month
+    D:int = 1000 # We will make an assumption that every 1000 D is a month
     def update(self):
         self.D += 1
         self.change_position()
@@ -65,8 +65,12 @@ class Rabbit(Agent):
         # The rabbit can give birth up to 12 per litters.
         for i in range(12):
             # There is a probability of 0.6 of every rabbit in the litter to make it.
-            if np.random.rand() < self.config.average_life:
+            if np.random.rand() < self.config.average_life * self.rate_of_change_rabbit(self.config.rabbits, self.config.foxes, self.config.rabbit_reproduction_rate, self.config.fox_eat_rabbit_prob) * self.config.dt:
                 self.reproduce()
+
+    def rate_of_change_rabbit(self,B,F,a,b):
+        # Using the formula from the Lotka-Volterra
+        return (a*B) - (b*B*F)
 
 
 simulation =  Simulation(
@@ -77,7 +81,7 @@ simulation =  Simulation(
             seed=1,
         ))
 
-simulation.batch_spawn_agents(5, Fox, images=["images/red.png"])
+simulation.batch_spawn_agents(10, Fox, images=["images/red.png"])
 simulation.batch_spawn_agents(20, Rabbit, images=["images/white.png"])
 simulation.run()
 
