@@ -16,6 +16,9 @@ class LotkaVolterraConfig(Config):
     average_life: float = 0.6 # In average 0.6 rabbits only stay alive in the litter.
     interaction_distance: float = 5.0  # Increase interaction distance
 
+foxes:int = 5
+rabbits:int = 20
+
 class Fox(Agent):
     config: LotkaVolterraConfig
     state: str = 'wandering'
@@ -36,7 +39,6 @@ class Fox(Agent):
                 rabbit.kill()
                 self.reproduce()
                 break
-
 
 class Rabbit(Agent):
     config: LotkaVolterraConfig
