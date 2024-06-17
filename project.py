@@ -5,20 +5,6 @@ from vi import Agent, Simulation
 from vi.config import Config, dataclass, deserialize
 import numpy as np
 import scipy.stats
-from PIL import Image, ImageEnhance
-
-# Function to resize and enhance the image
-def resize_and_enhance_image(image_path, size, sharpness_factor):
-    image = Image.open(image_path)
-    resized_image = image.resize(size, Image.LANCZOS)
-    enhancer = ImageEnhance.Sharpness(resized_image)
-    enhanced_image = enhancer.enhance(sharpness_factor)
-    enhanced_image_path = image_path.replace(".png", "_resized_enhanced.png")
-    enhanced_image.save(enhanced_image_path)
-    return enhanced_image_path
-
-# Resize and enhance the images
-the_outer_shape = resize_and_enhance_image("images/bubble-full.png", (300, 300), 2.0)
 
 @deserialize
 @dataclass
@@ -34,17 +20,10 @@ class Fox(Agent):
     state: str = 'wandering'
 
     def update(self):
-        if self.state == 'wandering':
-            self.change_position()
-            if np.random.rand() < self.config.fox_death_rate:
-                self.kill()
-            self.hunt()
-
-    def change_position(self):
-        if np.random.rand() < 0.2:  # Increase probability of changing direction
-            self.move = Vector2(np.random.uniform(-1, 1), np.random.uniform(-1, 1)).normalize()
-        self.pos += self.move * self.config.movement_speed
-        self.there_is_no_escape()
+        self.change_position()
+        if np.random.rand() < self.config.fox_death_rate:
+            self.kill()
+        self.hunt()
     
     def hunt(self):
         print(f"Fox at {self.pos} is hunting")  # Debugging statement
@@ -63,16 +42,11 @@ class Rabbit(Agent):
     state: str = 'wandering'
 
     def update(self):
-        if self.state == 'wandering':
-            self.change_position()
-            if np.random.rand() < self.config.rabbit_reproduction_rate:
-                self.reproduce()
 
-    def change_position(self):
-        if np.random.rand() < 0.2:  # Increase probability of changing direction
-            self.move = Vector2(np.random.uniform(-1, 1), np.random.uniform(-1, 1)).normalize()
-        self.pos += self.move * self.config.movement_speed
-        self.there_is_no_escape()
+        self.change_position()
+        if np.random.rand() < self.config.rabbit_reproduction_rate:
+            self.reproduce()
+
 
 
 
