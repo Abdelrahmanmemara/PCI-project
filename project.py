@@ -57,16 +57,6 @@ class Fox(Agent):
                 self.reproduce()
                 break
 
-   
-    def there_is_no_escape(self):
-        if self.pos.x < 235:
-            self.pos.x = 235
-        if self.pos.x > 515:
-            self.pos.x = 515
-        if self.pos.y < 235:
-            self.pos.y = 235
-        if self.pos.y > 515:
-            self.pos.y = 515
 
 class Rabbit(Agent):
     config: LotkaVolterraConfig
@@ -83,16 +73,7 @@ class Rabbit(Agent):
             self.move = Vector2(np.random.uniform(-1, 1), np.random.uniform(-1, 1)).normalize()
         self.pos += self.move * self.config.movement_speed
         self.there_is_no_escape()
-    
-    def there_is_no_escape(self):
-        if self.pos.x < 235:
-            self.pos.x = 235
-        if self.pos.x > 515:
-            self.pos.x = 515
-        if self.pos.y < 235:
-            self.pos.y = 235
-        if self.pos.y > 515:
-            self.pos.y = 515
+
 
 
 (
@@ -106,6 +87,5 @@ class Rabbit(Agent):
     )
     .batch_spawn_agents(5, Fox, images=["images/red.png"])
     .batch_spawn_agents(20, Rabbit, images=["images/white.png"])
-    .spawn_obstacle(the_outer_shape, 375, 375)
     .run()
 )
